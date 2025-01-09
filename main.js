@@ -3,6 +3,7 @@ const UpgradeScripts = require('./upgrades')
 const UpdateActions = require('./actions')
 const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
+const configFields = require('./config')
 
 class ModuleInstance extends InstanceBase {
 	constructor(internal) {
@@ -29,22 +30,7 @@ class ModuleInstance extends InstanceBase {
 
 	// Return config fields for web config
 	getConfigFields() {
-		return [
-			{
-				type: 'textinput',
-				id: 'host',
-				label: 'Target IP',
-				width: 8,
-				regex: Regex.IP,
-			},
-			{
-				type: 'textinput',
-				id: 'port',
-				label: 'Target Port',
-				width: 4,
-				regex: Regex.PORT,
-			},
-		]
+		return configFields
 	}
 
 	updateActions() {
