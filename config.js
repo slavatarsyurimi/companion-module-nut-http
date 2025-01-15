@@ -21,4 +21,13 @@ module.exports = [
 		label: 'Use HTTPS',
 		width: 3,
 	},
+	{
+		type: 'number',
+		id: 'refresh_rate',
+		label: 'Refresh rate (in milliseconds)',
+		width: 9,
+		default: 3000,
+		min: 500,
+		max: 60000,
+	},
 ]
