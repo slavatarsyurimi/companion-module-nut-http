@@ -54,7 +54,7 @@ class ModuleInstance extends InstanceBase {
 		this.log('info', 'Initializing connection')
 
 		axios
-			.get(url, { httpsAgent: this.agent, params: { parsed: true }, timeout: 3000 })
+			.get(url, { httpsAgent: this.agent, params: { parsed: true }, timeout: 5000 })
 			.then((response) => {
 				if (typeof response.data !== 'object') {
 					this.updateStatus(InstanceStatus.ConnectionFailure, `${url} must return an Object`)
@@ -108,20 +108,30 @@ class ModuleInstance extends InstanceBase {
 		return new Promise((resolve, reject) => {
 			const url = `http://${this.config.host}:${this.config.port}/devices/${device}`
 
-			axios.get(url, { httpsAgent: this.agent, params: { parsed: true } }).then((response) => {
+			axios.get(url, { httpsAgent: this.agent, params: { parsed: true } , timeout: 5000}).then((response) => {
 				const data = response.data
 
 				this.pendingVariablesUpdates.push({ id: `${device}_status`, value: data.ups.status })
 				this.pendingVariablesUpdates.push({ id: `${device}_charge`, value: data.battery.charge })
 
 				_.set(this.deviceData, `${device}.status`, data.ups.status)
+				_.set(this.deviceData, `${device}.alive`, true)
 				_.set(this.deviceData, `${device}.charge`, data.ups.charge)
 				_.set(this.deviceData, `${device}.statusnum`, data.ups.statusnum)
 
 				resolve();
 			}).catch((error) => {
-				console.log(error)
-				reject(error)
+				console.log('getDeviceData call failed')
+
+				this.pendingVariablesUpdates.push({ id: `${device}_status`, value: null })
+				this.pendingVariablesUpdates.push({ id: `${device}_charge`, value: null })
+
+				_.set(this.deviceData, `${device}.status`, null)
+				_.set(this.deviceData, `${device}.alive`, false)
+				_.set(this.deviceData, `${device}.charge`, null)
+				_.set(this.deviceData, `${device}.statusnum`, null)
+
+				resolve()
 			})
 		})
 	}

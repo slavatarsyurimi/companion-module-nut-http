@@ -54,5 +54,25 @@ module.exports = async function (self) {
 				return _.get(self.deviceData, `${feedback.options.ups}.statusnum`) >= 3
 			},
 		},
+
+		UPSAlive: {
+			name: 'UPS connection alive',
+			type: 'boolean',
+			label: 'UPS connection alive',
+			defaultStyle: {
+				bgcolor: combineRgb(0, 255, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [{
+				id: 'ups',
+				type: 'dropdown',
+				label: 'Select the UPS',
+				choices: upsChoices,
+				default: _.get(upsChoices, '0.id')
+			}],
+			callback: (feedback) => {
+				return Boolean(_.get(self.deviceData, `${feedback.options.ups}.alive`))
+			},
+		},
 	})
 }
