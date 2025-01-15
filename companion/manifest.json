@@ -1,7 +1,7 @@
 {
 	"id": "nut-http",
 	"name": "nut-http",
-	"shortname": "NUT",
+	"shortname": "nut-http",
 	"description": "NUT HTTP API Tools for Companion",
 	"version": "0.0.0",
 	"license": "MIT",
@@ -20,7 +20,7 @@
 		"entrypoint": "../main.js"
 	},
 	"legacyIds": [],
-	"manufacturer": "NUT",
+	"manufacturer": "Network UPS Tools",
 	"products": ["nut-http"],
-	"keywords": ["nut", "nut-http", "ups"]
+	"keywords": ["nut", "nut-http", "network", "ups", "tools"]
 }
