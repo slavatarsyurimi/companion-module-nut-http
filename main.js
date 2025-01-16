@@ -54,7 +54,7 @@ class ModuleInstance extends InstanceBase {
 		this.log('info', 'Initializing connection')
 
 		axios
-			.get(url, { httpsAgent: this.agent, params: { parsed: true }, timeout: 5000 })
+			.get(url, { httpsAgent: this.agent, params: { parsed: true }, timeout: 10000 })
 			.then((response) => {
 				if (typeof response.data !== 'object') {
 					this.updateStatus(InstanceStatus.ConnectionFailure, `${url} must return an Object`)
@@ -81,6 +81,9 @@ class ModuleInstance extends InstanceBase {
 			.catch((error) => {
 				console.error(error);
 				this.updateStatus(InstanceStatus.ConnectionFailure, error.message)
+
+				// 30000ms = 30 seconds
+				setTimeout(() => this.initApiConnection(), 30000)
 			})
 	}
 
